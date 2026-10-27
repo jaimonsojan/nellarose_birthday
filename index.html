@@ -27,7 +27,23 @@
 @keyframes glow{from{text-shadow:0 2px 12px #000a}to{text-shadow:0 0 22px #ffe0d9,0 2px 12px #000a}}
 /* Keep motion running even if system requests reduced motion: user explicitly requested animations */
 @media(prefers-reduced-motion:reduce){.slide img,.slide .copy .name,.slide .copy .eyebrow,.slide .copy .subtitle,.slide .copy .bottom,.slide .copy .venue,.spark{animation-duration:7s!important;animation-iteration-count:infinite!important}}
-.sound-toggle{position:absolute;z-index:10;right:14px;bottom:16px;width:38px;height:38px;border:1px solid #ffffff44;border-radius:50%;background:#0009;color:white;display:grid;place-items:center;cursor:pointer;backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}.sound-toggle svg{width:20px;height:20px}.sound-toggle:focus-visible{outline:2px solid #fff;outline-offset:3px}</style></head><body><main class="app" id="app"><header class="header"><div class="avatar"><img id="avatar" src="baby.jpg" alt="Nella Rose"></div><div><div class="user">nella.rose ♡</div><div class="sub">First birthday invitation · 30 October</div></div><span class="more">···</span></header><section class="visual" id="visual" aria-label="Birthday photo carousel"><div class="track" id="track"></div><span class="counter" id="counter">1/1</span><button class="nav prev" id="prev" aria-label="Previous photo">‹</button><button class="nav next" id="next" aria-label="Next photo">›</button></section><div class="actions"><button class="action" id="like" aria-label="Like"><svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/></svg></button><button class="action" id="comment" aria-label="Comment"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 9 9 0 0 1-4-.9L3 21l1.9-5.5a8.5 8.5 0 1 1 16.1-4Z"/></svg></button><button class="action" id="share" aria-label="Share"><svg viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4 20-7ZM22 2 11 13"/></svg></button><div class="dots" id="dots"></div><button class="action save" id="save" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M5 3h14v18l-7-5-7 5V3Z"/></svg></button></div><div class="likes" id="likes">Loved by family & friends ♡</div><div class="caption"><b>nella.rose</b> Our little sunshine is turning ONE! 🎂✨ You're invited to celebrate Nella Rose's first birthday. 💗<div class="muted">Friday, 30 Oct 2026 · 7:00 PM · Calicut Notebook</div></div><audio id="audio" loop preload="none"></audio></main><script>
+.sound-toggle{position:absolute;z-index:10;right:14px;bottom:16px;width:38px;height:38px;border:1px solid #ffffff44;border-radius:50%;background:#0009;color:white;display:grid;place-items:center;cursor:pointer;backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px)}.sound-toggle svg{width:20px;height:20px}.sound-toggle:focus-visible{outline:2px solid #fff;outline-offset:3px}
+/* Instagram-style double-tap heart */
+.double-tap-heart{position:absolute;left:50%;top:50%;z-index:12;pointer-events:none;color:#fff;font-size:110px;line-height:1;opacity:0;transform:translate(-50%,-50%) scale(.25) rotate(-12deg);text-shadow:0 5px 22px #0009,0 0 14px #ff4778;}
+.double-tap-heart.pop{animation:heartPop .9s ease-out forwards}
+@keyframes heartPop{0%{opacity:0;transform:translate(-50%,-50%) scale(.25) rotate(-12deg)}20%{opacity:1;transform:translate(-50%,-50%) scale(1.18) rotate(0)}45%{opacity:1;transform:translate(-50%,-50%) scale(.94)}70%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-58%) scale(1.15)}}
+
+/* Full-viewport celebration on photo double tap */
+#celebrationLayer{position:fixed;inset:0;z-index:1000;pointer-events:none;overflow:hidden;contain:layout style}
+.celebration-flash{position:absolute;inset:0;background:radial-gradient(circle at var(--cx,50%) var(--cy,50%),rgba(255,233,238,.42),rgba(255,70,128,.13) 42%,transparent 75%);animation:celebrateFlash .8s ease-out forwards}
+.celebration-main{position:absolute;left:var(--cx);top:var(--cy);font-size:clamp(95px,24vw,175px);line-height:1;color:#fff;filter:drop-shadow(0 7px 12px #7b153a88) drop-shadow(0 0 25px #ff739b);animation:celebrateMain 1.15s cubic-bezier(.16,.8,.24,1) forwards}
+.celebration-particle{position:absolute;left:var(--cx);top:var(--cy);font-size:var(--size);line-height:1;opacity:0;color:var(--color);text-shadow:0 0 12px #ff99bd88;animation:celebrateFly var(--duration) cubic-bezier(.14,.64,.29,1) var(--delay) forwards}
+.celebration-glint{position:absolute;left:var(--cx);top:var(--cy);width:15px;height:15px;border-radius:50%;background:#fff8d5;box-shadow:0 0 20px 7px #ffe0a1;animation:celebrateFly var(--duration) ease-out var(--delay) forwards}
+@keyframes celebrateFlash{0%{opacity:0}18%{opacity:1}100%{opacity:0}}
+@keyframes celebrateMain{0%{opacity:0;transform:translate(-50%,-50%) scale(.1) rotate(-22deg)}30%{opacity:1;transform:translate(-50%,-50%) scale(1.25) rotate(8deg)}48%{transform:translate(-50%,-50%) scale(.93)}68%{opacity:1;transform:translate(-50%,-50%) scale(1.05)}100%{opacity:0;transform:translate(-50%,-65%) scale(1.32)}}
+@keyframes celebrateFly{0%{opacity:0;transform:translate(-50%,-50%) translate(0,0) scale(.25) rotate(0)}14%{opacity:1}75%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) translate(var(--dx),var(--dy)) scale(var(--end-scale)) rotate(var(--rotate))}}
+@media(prefers-reduced-motion:reduce){.celebration-main{animation-duration:.65s!important}.celebration-flash{animation-duration:.4s!important}.celebration-particle,.celebration-glint{animation-duration:.7s!important}}
+</style></head><body><main class="app" id="app"><header class="header"><div class="avatar"><img id="avatar" src="baby.jpg" alt="Nella Rose"></div><div><div class="user">nella.rose ♡</div><div class="sub">First birthday invitation · 30 October</div></div><span class="more">···</span></header><section class="visual" id="visual" aria-label="Birthday photo carousel"><div class="track" id="track"></div><span class="counter" id="counter">1/1</span><button class="nav prev" id="prev" aria-label="Previous photo">‹</button><button class="nav next" id="next" aria-label="Next photo">›</button></section><div class="actions"><button class="action" id="like" aria-label="Like"><svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/></svg></button><button class="action" id="comment" aria-label="Comment"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 9 9 0 0 1-4-.9L3 21l1.9-5.5a8.5 8.5 0 1 1 16.1-4Z"/></svg></button><button class="action" id="share" aria-label="Share"><svg viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4 20-7ZM22 2 11 13"/></svg></button><div class="dots" id="dots"></div><button class="action save" id="save" aria-label="Save"><svg viewBox="0 0 24 24"><path d="M5 3h14v18l-7-5-7 5V3Z"/></svg></button></div><div class="likes" id="likes">Loved by family & friends ♡</div><div class="caption"><b>nella.rose</b> Our little sunshine is turning ONE! 🎂✨ You're invited to celebrate Nella Rose's first birthday. 💗<div class="muted">Friday, 30 Oct 2026 · 7:00 PM · Calicut Notebook</div></div><audio id="audio" loop preload="none"></audio></main><script>
 const $=id=>document.getElementById(id);// EDIT YOUR PHOTO AND MUSIC LINKS BELOW.
 // Add up to 10 photo URLs. You may use relative paths such as "images/photo2.jpg"
 // or complete HTTPS URLs. Keep images in the same order you want them displayed.
@@ -94,5 +110,69 @@ soundBtn.addEventListener('click', async () => {
 audioEl.addEventListener('error', () => {soundBtn.title = 'Audio could not load';});
 audioEl.addEventListener('pause', updateSoundButton);
 audioEl.addEventListener('playing', updateSoundButton);
+// Double-tap or double-click the photo to like; controls and swipes remain independent.
+const celebrationLayer=document.createElement('div');
+celebrationLayer.id='celebrationLayer';
+celebrationLayer.setAttribute('aria-hidden','true');
+document.body.appendChild(celebrationLayer);
+let celebrationCleanup;
+function showHeartBurst(x,y){
+  celebrationLayer.replaceChildren();
+  clearTimeout(celebrationCleanup);
+  const cx=Math.max(0,Math.min(window.innerWidth,x));
+  const cy=Math.max(0,Math.min(window.innerHeight,y));
+  celebrationLayer.style.setProperty('--cx',cx+'px');
+  celebrationLayer.style.setProperty('--cy',cy+'px');
+  const flash=document.createElement('div');flash.className='celebration-flash';celebrationLayer.appendChild(flash);
+  const main=document.createElement('div');main.className='celebration-main';main.textContent='♥';celebrationLayer.appendChild(main);
+  const symbols=['♥','♡','✦','✧','♥','✧'];
+  const colors=['#fff','#ffc0d1','#ff638c','#ffe0a0','#ffedf2'];
+  const spread=Math.max(window.innerWidth,window.innerHeight)*.85;
+  for(let i=0;i<52;i++){
+    const p=document.createElement('span');
+    const angle=(i/52)*Math.PI*2+(Math.random()-.5)*.5;
+    const dist=spread*(.25+Math.random()*.7);
+    p.className='celebration-particle';
+    p.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+    p.style.setProperty('--dx',Math.cos(angle)*dist+'px');
+    p.style.setProperty('--dy',Math.sin(angle)*dist+'px');
+    p.style.setProperty('--size',(13+Math.random()*30)+'px');
+    p.style.setProperty('--color',colors[Math.floor(Math.random()*colors.length)]);
+    p.style.setProperty('--rotate',(-150+Math.random()*300)+'deg');
+    p.style.setProperty('--duration',(1.05+Math.random()*.65)+'s');
+    p.style.setProperty('--delay',(Math.random()*.12)+'s');
+    p.style.setProperty('--end-scale',(.6+Math.random()*.9));
+    celebrationLayer.appendChild(p);
+  }
+  celebrationCleanup=setTimeout(()=>celebrationLayer.replaceChildren(),2100);
+}
+function likePhoto(x,y){
+  if(!$('like').classList.contains('liked')) $('like').click();
+  showHeartBurst(x,y);
+}
+let lastPhotoTap=0;
+let lastTapPosition=null;
+let photoTouchStart=null;
+let lastTouchLikeTime=0;
+const visual=$('visual');
+visual.addEventListener('touchstart',e=>{
+  if(e.touches.length!==1)return;
+  photoTouchStart={x:e.touches[0].clientX,y:e.touches[0].clientY};
+},{passive:true});
+visual.addEventListener('touchend',e=>{
+  if(!photoTouchStart||e.changedTouches.length!==1)return;
+  const t=e.changedTouches[0];
+  const moved=Math.hypot(t.clientX-photoTouchStart.x,t.clientY-photoTouchStart.y);
+  photoTouchStart=null;
+  if(moved>18||e.target.closest('button')){lastPhotoTap=0;return;}
+  const now=Date.now();
+  const near=lastTapPosition&&Math.hypot(t.clientX-lastTapPosition.x,t.clientY-lastTapPosition.y)<90;
+  if(now-lastPhotoTap<360&&near){likePhoto(t.clientX,t.clientY);lastTouchLikeTime=now;lastPhotoTap=0;}
+  else {lastPhotoTap=now;lastTapPosition={x:t.clientX,y:t.clientY};}
+},{passive:true});
+visual.addEventListener('dblclick',e=>{
+  if(e.target.closest('button')||Date.now()-lastTouchLikeTime<700)return;
+  likePhoto(e.clientX,e.clientY);
+});
 $('like').onclick=()=>{$('like').classList.toggle('liked');$('likes').textContent=$('like').classList.contains('liked')?'Liked by you ❤️':'Loved by family & friends ♡'};$('save').onclick=()=>{$('save').style.color=$('save').style.color?'':'#fff';$('save').querySelector('svg').style.fill=$('save').querySelector('svg').style.fill?'':'#fff'};$('comment').onclick=()=>alert('We can’t wait to celebrate with you! 💗');$('share').onclick=async()=>{const data={title:'Nella Rose First Birthday',text:'You are invited! 30 October 2026, 7 PM at Calicut Notebook.'};if(navigator.share){try{await navigator.share(data)}catch(e){}}else{try{await navigator.clipboard.writeText(data.text);alert('Invitation details copied!')}catch(e){alert(data.text)}}};document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'){move(1);resetAutoSlide()}if(e.key==='ArrowLeft'){move(-1);resetAutoSlide()}});render();
 </script></body></html>
